@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sn.model.InitUser;
 import com.sn.model.UserInfo;
 import com.sn.utils.DbDao;
+import com.sn.utils.HttpUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -37,6 +38,7 @@ public class WeiboSpider {
 
     // 开始
     public void start(Connection conn) throws Exception{
+
         InitUser user = new InitUser("15608068781", "hh123456", "3677513777");
         WebDriver webDriver = login(user);
         Set<String> attachList = GetUserList.getFollowList(user.getUserId(), webDriver);

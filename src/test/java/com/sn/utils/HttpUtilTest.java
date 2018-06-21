@@ -34,6 +34,6 @@ public class HttpUtilTest {
 
         InitUser user = new InitUser("15608068781", "hh123456", "3677513777");
         HttpUtil client = new HttpUtil();
-        client.getHtml("https://weibo.com");
+        client.getHtml("https://weibo.com/login.php");
     }
 }
