@@ -1,15 +1,13 @@
 package com.sn.utils;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,12 +18,21 @@ import java.util.regex.Pattern;
  */
 public class HttpUtil {
 
-    private static String userAgent = "Mozilla/5.0 " +
-            "(iPhone; CPU iPhone OS 11_0 like Mac OS X) " +
-            "AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
+    private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36";
 
     public String getHtml(String url) throws IOException {
-        OkHttpClient httpClient = new OkHttpClient();
+        OkHttpClient httpClient = new OkHttpClient().newBuilder()
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl httpUrl, List<Cookie> list) {
+                        System.out.println(list);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl httpUrl) {
+                        return null;
+                    }
+                }).build();
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("User-Agent", userAgent)
@@ -34,7 +41,7 @@ public class HttpUtil {
         Call call = httpClient.newCall(request);
         Response response = call.execute();
 
-
+        System.out.println(response.body().string());
         String html = null;
         if(response.isSuccessful()){
             html = response.body().string().replace("\\", "");
